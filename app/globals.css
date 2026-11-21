@@ -2,8 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg-page: #f7f9fc;
+  --bg-surface: #ffffff;
+  --bg-accent-soft: #fff9e6;
+  --ink-primary: #0f172a;
+  --brand-primary: #1d4ed8;
+  --accent-gold: #f59e0b;
+}
+
 @layer base {
-  html { scroll-behavior: smooth; }
-  body { @apply bg-surface text-ink antialiased; }
-  h1, h2, h3, h4 { @apply text-ink tracking-tight; }
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg-page);
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(29, 78, 216, 0.06), transparent 42%),
+      radial-gradient(circle at 88% 18%, rgba(245, 158, 11, 0.08), transparent 38%);
+    color: var(--ink-primary);
+    @apply antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    color: var(--ink-primary);
+    @apply tracking-tight;
+  }
 }
