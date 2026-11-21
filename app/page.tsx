@@ -80,16 +80,14 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="flex justify-center">
-              <div className="relative flex h-64 w-64 items-center justify-center overflow-hidden rounded-3xl border border-line bg-surface p-6 shadow-sm sm:h-80 sm:w-80">
-                <Image
-                  src={logoUrl}
-                  alt="Logo de Enlace de Futuro"
-                  fill
-                  className="object-contain p-4"
-                  priority
-                />
-              </div>
+            <div className="relative aspect-square w-full overflow-hidden rounded-3xl">
+              <Image
+                src={logoUrl}
+                alt="Logo de Enlace de Futuro"
+                fill
+                className="object-cover"
+                priority
+              />
             </div>
           </div>
         </div>
