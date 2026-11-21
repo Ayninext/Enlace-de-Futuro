@@ -1,5 +1,6 @@
 import OpportunitiesExplorer from "@/components/OpportunitiesExplorer";
 import { getActive } from "@/lib/store";
+import Image from "next/image";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -9,7 +10,7 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-surface text-ink flex flex-col">
-      {/* SECCIÓN 1: Quiénes Somos / Misión / Visión + Foto o Logo */}
+      {/* SECCIÓN 1: Quiénes Somos / Misión / Visión + Logo */}
       <section className="border-b border-line bg-surface-muted py-20 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
           <div className="grid gap-12 md:grid-cols-2 items-center">
@@ -64,14 +65,14 @@ export default async function Home() {
             </div>
 
             <div className="flex justify-center">
-              <div className="relative w-64 h-64 sm:w-80 sm:h-80 rounded-3xl border-2 border-dashed border-line bg-surface flex flex-col items-center justify-center p-6 text-center shadow-inner">
-                <div className="w-20 h-20 rounded-full bg-brand/10 flex items-center justify-center text-brand mb-4 text-3xl font-bold">
-                  EF
-                </div>
-                <p className="text-sm font-semibold text-ink">Foto de perfil o logo</p>
-                <p className="text-xs text-ink/50 mt-1">
-                  Espacio listo para cuando elijas tu imagen.
-                </p>
+              <div className="relative flex h-64 w-64 items-center justify-center overflow-hidden rounded-3xl border border-line bg-surface p-6 shadow-sm sm:h-80 sm:w-80">
+                <Image
+                  src="/logo.jpeg"
+                  alt="Logo de Enlace de Futuro"
+                  fill
+                  className="object-contain p-4"
+                  priority
+                />
               </div>
             </div>
           </div>
