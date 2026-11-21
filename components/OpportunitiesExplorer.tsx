@@ -4,11 +4,19 @@ import { useMemo, useState } from "react";
 import OpportunityCard from "./OpportunityCard";
 import { daysLeft, type Category, type Opportunity } from "@/lib/opportunities";
 
-type CategoryFilter = "Todas" | Category;
+type ExtraCategory = "Concursos";
+type CategoryFilter = "Todas" | Category | ExtraCategory;
 type Closing = "all" | "7" | "30";
 type Sort = "deadline-asc" | "deadline-desc" | "recent";
 
-const chips: CategoryFilter[] = ["Todas", "Becas", "Empleos", "Cursos", "Convocatorias", "Concursos"];
+const chips: CategoryFilter[] = [
+  "Todas",
+  "Becas",
+  "Empleos",
+  "Cursos",
+  "Convocatorias",
+  "Concursos",
+];
 
 const normalize = (s: string) =>
   s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -44,7 +52,7 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
     return filtered.sort((a, b) => {
       if (sort === "deadline-desc") return b.deadline.localeCompare(a.deadline);
       if (sort === "recent") {
-        return (b.createdAt ?? "").localeCompare(a.createdAt ?? "") || Number(b.id) - Number(b.id);
+        return (b.createdAt ?? "").localeCompare(a.createdAt ?? "") || Number(b.id) - Number(a.id);
       }
       return a.deadline.localeCompare(b.deadline);
     });
@@ -107,86 +115,4 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
                   type="button"
                   aria-pressed={active}
                   onClick={() => setCategory(f)}
-                  className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
-                    active
-                      ? "border-brand bg-brand text-white"
-                      : "border-line bg-surface text-ink hover:border-brand hover:text-brand"
-                  }`}
-                >
-                  {f}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Filtros avanzados + resultados */}
-      <section id="oportunidades" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-16 sm:px-6">
-        <div className="mb-6 flex items-end justify-between">
-          <div>
-            <h2 className="text-2xl font-bold sm:text-3xl">Oportunidades activas</h2>
-            <p className="mt-1 text-sm text-ink/60" aria-live="polite">
-              {results.length} {results.length === 1 ? "resultado" : "resultados"}
-            </p>
-          </div>
-          <span aria-hidden="true" className="hidden h-1 w-16 rounded-full bg-accent sm:block" />
-        </div>
-
-        <div className="mb-8 rounded-2xl border border-line bg-surface-muted p-4">
-          <div className="grid gap-4 sm:grid-cols-3">
-            <div>
-              <label htmlFor="f-location" className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/50">
-                Ubicación / país
-              </label>
-              <select id="f-location" value={location} onChange={(e) => setLocation(e.target.value)} className={selectClass}>
-                <option value="all">Todas las ubicaciones</option>
-                {locations.map((l) => (
-                  <option key={l} value={l}>{l}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="f-closing" className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/50">
-                Fecha de cierre
-              </label>
-              <select id="f-closing" value={closing} onChange={(e) => setClosing(e.target.value as Closing)} className={selectClass}>
-                <option value="all">Cualquier fecha</option>
-                <option value="7">Próximos 7 días</option>
-                <option value="30">Próximos 30 días</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="f-sort" className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/50">
-                Ordenar por
-              </label>
-              <select id="f-sort" value={sort} onChange={(e) => setSort(e.target.value as Sort)} className={selectClass}>
-                <option value="deadline-asc">Cierre más próximo</option>
-                <option value="deadline-desc">Cierre más lejano</option>
-                <option value="recent">Publicadas recientemente</option>
-              </select>
-            </div>
-          </div>
-          {hasFilters && (
-            <button type="button" onClick={clear} className="mt-4 text-sm font-semibold text-brand hover:text-brand-dark">
-              Limpiar filtros
-            </button>
-          )}
-        </div>
-
-        {results.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {results.map((o) => (
-              <OpportunityCard key={o.id} item={o} />
-            ))}
-          </div>
-        ) : (
-          <div className="rounded-2xl border border-dashed border-line bg-surface-muted p-12 text-center">
-            <p className="font-semibold">No encontramos resultados</p>
-            <p className="mt-1 text-sm text-ink/60">Prueba con otra palabra clave o ajusta los filtros.</p>
-          </div>
-        )}
-      </section>
-    </>
-  );
-}
+                  className={`rounded-full
