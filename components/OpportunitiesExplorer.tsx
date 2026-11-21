@@ -115,4 +115,114 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
                   type="button"
                   aria-pressed={active}
                   onClick={() => setCategory(f)}
-                  className={`rounded-full
+                  className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                    active
+                      ? "bg-brand text-white"
+                      : "border border-line bg-surface text-ink/75 hover:border-brand hover:text-brand"
+                  }`}
+                >
+                  {f}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Explorador de oportunidades */}
+      <section id="oportunidades" className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div>
+            <label htmlFor="location" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ink/60">
+              Ubicación
+            </label>
+            <select
+              id="location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className={selectClass}
+            >
+              <option value="all">Todas las ubicaciones</option>
+              {locations.map((loc) => (
+                <option key={loc} value={loc}>
+                  {loc}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="closing" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ink/60">
+              Cierre
+            </label>
+            <select
+              id="closing"
+              value={closing}
+              onChange={(e) => setClosing(e.target.value as Closing)}
+              className={selectClass}
+            >
+              <option value="all">Cualquier fecha</option>
+              <option value="7">Cierra en 7 días</option>
+              <option value="30">Cierra en 30 días</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="sort" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ink/60">
+              Ordenar por
+            </label>
+            <select
+              id="sort"
+              value={sort}
+              onChange={(e) => setSort(e.target.value as Sort)}
+              className={selectClass}
+            >
+              <option value="deadline-asc">Próximos a cerrar</option>
+              <option value="deadline-desc">Fecha de cierre más lejana</option>
+              <option value="recent">Agregados recientemente</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <p className="text-sm text-ink/70">
+            Mostrando <strong className="font-semibold text-ink">{results.length}</strong>{" "}
+            {results.length === 1 ? "oportunidad" : "oportunidades"}
+          </p>
+
+          {hasFilters && (
+            <button
+              type="button"
+              onClick={clear}
+              className="text-sm font-medium text-brand hover:underline"
+            >
+              Limpiar filtros
+            </button>
+          )}
+        </div>
+
+        {results.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-line bg-surface-muted px-6 py-16 text-center">
+            <p className="text-base font-medium text-ink">No encontramos oportunidades con esos filtros</p>
+            <p className="mt-1 text-sm text-ink/65">
+              Prueba buscando con otras palabras clave o restablece los filtros.
+            </p>
+            <button
+              type="button"
+              onClick={clear}
+              className="mt-5 rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-dark"
+            >
+              Ver todas las oportunidades
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {results.map((item) => (
+              <OpportunityCard key={item.id} opportunity={item} />
+            ))}
+          </div>
+        )}
+      </section>
+    </>
+  );
+}
