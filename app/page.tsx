@@ -1,12 +1,28 @@
 import OpportunitiesExplorer from "@/components/OpportunitiesExplorer";
 import { getActive } from "@/lib/store";
+import { getSupabase } from "@/lib/supabase";
 import Image from "next/image";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
+async function getSiteLogo(): Promise<string> {
+  try {
+    const { data, error } = await getSupabase()
+      .from("site_settings")
+      .select("logo_url")
+      .eq("id", "main")
+      .maybeSingle();
+
+    if (error || !data?.logo_url) return "/logo.jpeg";
+    return data.logo_url;
+  } catch {
+    return "/logo.jpeg";
+  }
+}
+
 export default async function Home() {
-  const opportunities = await getActive();
+  const [opportunities, logoUrl] = await Promise.all([getActive(), getSiteLogo()]);
 
   return (
     <div className="min-h-screen bg-surface text-ink flex flex-col">
@@ -67,7 +83,7 @@ export default async function Home() {
             <div className="flex justify-center">
               <div className="relative flex h-64 w-64 items-center justify-center overflow-hidden rounded-3xl border border-line bg-surface p-6 shadow-sm sm:h-80 sm:w-80">
                 <Image
-                  src="/logo.jpeg"
+                  src={logoUrl}
                   alt="Logo de Enlace de Futuro"
                   fill
                   className="object-contain p-4"
