@@ -3,12 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --bg-page: #f7f9fc;
-  --bg-surface: #ffffff;
-  --bg-accent-soft: #fff9e6;
-  --ink-primary: #0f172a;
-  --brand-primary: #1d4ed8;
-  --accent-gold: #f59e0b;
+  --bg-page: #f6f8fd;
+  --bg-glow-blue: rgba(36, 72, 216, 0.07);
+  --bg-glow-gold: rgba(242, 189, 56, 0.11);
 }
 
 @layer base {
@@ -19,14 +16,16 @@
   body {
     background-color: var(--bg-page);
     background-image:
-      radial-gradient(circle at 12% 8%, rgba(29, 78, 216, 0.06), transparent 42%),
-      radial-gradient(circle at 88% 18%, rgba(245, 158, 11, 0.08), transparent 38%);
-    color: var(--ink-primary);
-    @apply antialiased;
+      radial-gradient(circle at 10% 6%, var(--bg-glow-blue), transparent 40%),
+      radial-gradient(circle at 90% 14%, var(--bg-glow-gold), transparent 36%),
+      linear-gradient(180deg, rgba(238, 242, 253, 0.55) 0%, rgba(254, 247, 228, 0.25) 55%, rgba(246, 248, 253, 0.9) 100%);
+    @apply text-ink antialiased;
   }
 
-  h1, h2, h3, h4 {
-    color: var(--ink-primary);
-    @apply tracking-tight;
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply text-ink tracking-tight;
   }
 }
