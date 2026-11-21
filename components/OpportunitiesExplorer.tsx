@@ -115,114 +115,44 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
                   type="button"
                   aria-pressed={active}
                   onClick={() => setCategory(f)}
-                  className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                    active
-                      ? "bg-brand text-white"
-                      : "border border-line bg-surface text-ink/75 hover:border-brand hover:text-brand"
-                  }`}
-                >
-                  {f}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Explorador de oportunidades */}
-      <section id="oportunidades" className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div>
-            <label htmlFor="location" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ink/60">
-              Ubicación
-            </label>
-            <select
-              id="location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className={selectClass}
-            >
-              <option value="all">Todas las ubicaciones</option>
-              {locations.map((loc) => (
-                <option key={loc} value={loc}>
-                  {loc}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="closing" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ink/60">
-              Cierre
-            </label>
-            <select
-              id="closing"
-              value={closing}
-              onChange={(e) => setClosing(e.target.value as Closing)}
-              className={selectClass}
-            >
-              <option value="all">Cualquier fecha</option>
-              <option value="7">Cierra en 7 días</option>
-              <option value="30">Cierra en 30 días</option>
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="sort" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ink/60">
-              Ordenar por
-            </label>
-            <select
-              id="sort"
-              value={sort}
-              onChange={(e) => setSort(e.target.value as Sort)}
-              className={selectClass}
-            >
-              <option value="deadline-asc">Próximos a cerrar</option>
-              <option value="deadline-desc">Fecha de cierre más lejana</option>
-              <option value="recent">Agregados recientemente</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-          <p className="text-sm text-ink/70">
-            Mostrando <strong className="font-semibold text-ink">{results.length}</strong>{" "}
-            {results.length === 1 ? "oportunidad" : "oportunidades"}
-          </p>
-
-          {hasFilters && (
-            <button
-              type="button"
-              onClick={clear}
-              className="text-sm font-medium text-brand hover:underline"
-            >
-              Limpiar filtros
-            </button>
-          )}
-        </div>
-
-        {results.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-line bg-surface-muted px-6 py-16 text-center">
-            <p className="text-base font-medium text-ink">No encontramos oportunidades con esos filtros</p>
-            <p className="mt-1 text-sm text-ink/65">
-              Prueba buscando con otras palabras clave o restablece los filtros.
+                  className={`rounded-full
+{/* Quiénes somos, Misión y Visión */}
+      <section id="nosotros" className="border-t border-line bg-surface-muted">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="inline-block rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-[#8A6508]">
+              Sobre el proyecto
+            </span>
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+              Quiénes somos en <span className="text-brand">Enlace de Futuro</span>
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-ink/75">
+              Enlace de Futuro es una plataforma creada para acercar oportunidades reales de formación
+              y crecimiento a quienes más las buscan. Reunimos becas, empleos, cursos gratuitos,
+              convocatorias y concursos en un espacio claro, accesible y actualizado a diario para que
+              nadie se quede sin descubrir su próximo paso.
             </p>
-            <button
-              type="button"
-              onClick={clear}
-              className="mt-5 rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-dark"
-            >
-              Ver todas las oportunidades
-            </button>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {results.map((item) => (
-     <OpportunityCard key={item.id} item={item} />
-            ))}
+
+          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="rounded-2xl border border-line bg-surface p-6 sm:p-8">
+              <h3 className="text-xl font-bold text-ink">Misión</h3>
+              <p className="mt-3 text-sm leading-relaxed text-ink/75 sm:text-base">
+                Conectar el talento y las ganas de aprender con oportunidades concretas de estudio,
+                trabajo y desarrollo, centralizando información confiable en un solo lugar y
+                facilitando que cada persona encuentre opciones alineadas con sus metas y su etapa de
+                vida.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-line bg-surface p-6 sm:p-8">
+              <h3 className="text-xl font-bold text-ink">Visión</h3>
+              <p className="mt-3 text-sm leading-relaxed text-ink/75 sm:text-base">
+                Consolidarnos como el punto de referencia más confiable y cercano para descubrir
+                oportunidades educativas, laborales y formativas, impulsando comunidades más
+                preparadas, conectadas y con mayor acceso a su propio futuro.
+              </p>
+            </div>
           </div>
-        )}
+        </div>
       </section>
-    </>
-  );
-}
