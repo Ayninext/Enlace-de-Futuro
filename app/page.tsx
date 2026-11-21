@@ -2,6 +2,8 @@ import OpportunitiesExplorer from "@/components/OpportunitiesExplorer";
 import { getActive } from "@/lib/store";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const opportunities = await getActive();
 
