@@ -18,6 +18,13 @@ const chips: CategoryFilter[] = [
   "Concursos",
 ];
 
+const LOCATIONS = [
+  "100% virtual",
+  "Internacional",
+  "Lima, Perú",
+  "Nacional",
+] as const;
+
 const normalize = (s: string) =>
   s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
@@ -30,11 +37,6 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
   const [location, setLocation] = useState("all");
   const [closing, setClosing] = useState<Closing>("all");
   const [sort, setSort] = useState<Sort>("deadline-asc");
-
-  const locations = useMemo(
-    () => Array.from(new Set(items.map((o) => o.location))).sort((a, b) => a.localeCompare(b, "es")),
-    [items]
-  );
 
   const results = useMemo(() => {
     const terms = normalize(query).split(/\s+/).filter(Boolean);
@@ -83,11 +85,11 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
       <section className="border-b border-line bg-surface-muted">
         <div className="mx-auto max-w-6xl px-4 py-16 text-center sm:px-6 sm:py-24">
           <span className="inline-block rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-[#8A6508]">
-            Oportunidades para todas las edades
+            Oportunidades para jóvenes
           </span>
-          <h1 className="mx-auto mt-5 max-w-3xl text-4xl font-bold leading-tight sm:text-5xl">
+          <h2 className="mx-auto mt-5 max-w-3xl text-4xl font-bold leading-tight sm:text-5xl">
             Encuentra tu próxima <span className="text-brand">oportunidad</span>
-          </h1>
+          </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-ink/70 sm:text-lg">
             Becas, empleos, cursos gratuitos, convocatorias y concursos, reunidos en un solo lugar y actualizados a diario.
           </p>
@@ -180,7 +182,7 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
               className={selectClass}
             >
               <option value="all">Todas las ubicaciones</option>
-              {locations.map((loc) => (
+              {LOCATIONS.map((loc) => (
                 <option key={loc} value={loc}>
                   {loc}
                 </option>
@@ -244,47 +246,6 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
             ))}
           </div>
         )}
-      </section>
-
-      {/* Quiénes somos, Misión y Visión */}
-      <section id="nosotros" className="border-t border-line bg-surface-muted">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="inline-block rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-[#8A6508]">
-              Sobre el proyecto
-            </span>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-              Quiénes somos en <span className="text-brand">Enlace de Futuro</span>
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-ink/75">
-              Enlace de Futuro es una plataforma creada para acercar oportunidades reales de formación
-              y crecimiento a quienes más las buscan. Reunimos becas, empleos, cursos gratuitos,
-              convocatorias y concursos en un espacio claro, accesible y actualizado a diario para que
-              nadie se quede sin descubrir su próximo paso.
-            </p>
-          </div>
-
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div className="rounded-2xl border border-line bg-surface p-6 sm:p-8">
-              <h3 className="text-xl font-bold text-ink">Misión</h3>
-              <p className="mt-3 text-sm leading-relaxed text-ink/75 sm:text-base">
-                Conectar el talento y las ganas de aprender con oportunidades concretas de estudio,
-                trabajo y desarrollo, centralizando información confiable en un solo lugar y
-                facilitando que cada persona encuentre opciones alineadas con sus metas y su etapa de
-                vida.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-line bg-surface p-6 sm:p-8">
-              <h3 className="text-xl font-bold text-ink">Visión</h3>
-              <p className="mt-3 text-sm leading-relaxed text-ink/75 sm:text-base">
-                Consolidarnos como el punto de referencia más confiable y cercano para descubrir
-                oportunidades educativas, laborales y formativas, impulsando comunidades más
-                preparadas, conectadas y con mayor acceso a su propio futuro.
-              </p>
-            </div>
-          </div>
-        </div>
       </section>
     </>
   );
