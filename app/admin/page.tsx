@@ -1,12 +1,88 @@
 import Link from "next/link";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/auth";
 import { getAll } from "@/lib/store";
+import { getSupabase } from "@/lib/supabase";
 import { isActive } from "@/lib/opportunities";
 import type { AdminRow } from "@/lib/admin-filter";
 import AdminOpportunitiesTable from "@/components/admin/AdminOpportunitiesTable";
+import AdminLogoUploader from "@/components/admin/AdminLogoUploader";
 
 export const dynamic = "force-dynamic";
+
+const BUCKET = "branding";
+const MAX_BYTES = 3 * 1024 * 1024; // 3 MB
+
+async function getCurrentLogo(): Promise<string> {
+  try {
+    const { data, error } = await getSupabase()
+      .from("site_settings")
+      .select("logo_url")
+      .eq("id", "main")
+      .maybeSingle();
+
+    if (error || !data?.logo_url) return "/logo.jpeg";
+    return data.logo_url;
+  } catch {
+    return "/logo.jpeg";
+  }
+}
+
+async function updateLogoAction(
+  formData: FormData
+): Promise<{ ok: boolean; message: string; url?: string }> {
+  "use server";
+
+  if (!(await isAdmin())) {
+    return { ok: false, message: "No autorizado." };
+  }
+
+  const file = formData.get("logo");
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false, message: "Selecciona un archivo de imagen válido." };
+  }
+
+  if (!file.type.startsWith("image/")) {
+    return { ok: false, message: "El archivo debe ser una imagen." };
+  }
+
+  if (file.size > MAX_BYTES) {
+    return { ok: false, message: "La imagen no debe superar los 3 MB." };
+  }
+
+  const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+  const filePath = `logo-${Date.now()}.${ext}`;
+  const arrayBuffer = await file.arrayBuffer();
+
+  const supabase = getSupabase();
+  const { error: uploadError } = await supabase.storage
+    .from(BUCKET)
+    .upload(filePath, Buffer.from(arrayBuffer), {
+      contentType: file.type,
+      upsert: true,
+    });
+
+  if (uploadError) {
+    return { ok: false, message: `Error al subir a Storage: ${uploadError.message}` };
+  }
+
+  const { data: publicData } = supabase.storage.from(BUCKET).getPublicUrl(filePath);
+  const publicUrl = publicData.publicUrl;
+
+  const { error: dbError } = await supabase
+    .from("site_settings")
+    .upsert({ id: "main", logo_url: publicUrl, updated_at: new Date().toISOString() });
+
+  if (dbError) {
+    return { ok: false, message: `Error al guardar en base de datos: ${dbError.message}` };
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin");
+
+  return { ok: true, message: "Logo actualizado correctamente.", url: publicUrl };
+}
 
 export default async function AdminPage({
   searchParams,
@@ -15,10 +91,10 @@ export default async function AdminPage({
 }) {
   if (!(await isAdmin())) redirect("/admin/login");
 
-  const all = await getAll();
+  const [all, currentLogo] = await Promise.all([getAll(), getCurrentLogo()]);
   const rows: AdminRow[] = [...all]
     .sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? "") || Number(b.id) - Number(a.id))
-    .map((o) => ({ ...o, active: isActive(o) })); // el estado se calcula aquí, en el servidor
+    .map((o) => ({ ...o, active: isActive(o) }));
   const activeCount = rows.filter((r) => r.active).length;
 
   return (
@@ -67,6 +143,8 @@ export default async function AdminPage({
           </div>
         ))}
       </div>
+
+      <AdminLogoUploader currentLogoUrl={currentLogo} onUploadAction={updateLogoAction} />
 
       <AdminOpportunitiesTable rows={rows} />
     </main>
