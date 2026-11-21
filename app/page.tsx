@@ -1,9 +1,9 @@
 import OpportunitiesExplorer from "@/components/OpportunitiesExplorer";
-import { getOpportunities } from "@/lib/opportunities";
+import { getActive } from "@/lib/store";
 import Link from "next/link";
 
 export default async function Home() {
-  const opportunities = await getOpportunities();
+  const opportunities = await getActive();
 
   return (
     <div className="min-h-screen bg-surface text-ink flex flex-col">
