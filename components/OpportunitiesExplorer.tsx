@@ -29,7 +29,7 @@ const normalize = (s: string) =>
   s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
 const selectClass =
-  "w-full rounded-xl border border-brand/15 bg-surface px-3 py-2.5 text-sm text-ink shadow-xs transition-colors hover:border-brand/35 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20";
+  "w-full rounded-xl border-2 border-brand/20 bg-surface px-3 py-2.5 text-sm font-medium text-ink shadow-xs transition-all hover:border-brand focus:border-brand focus:outline-none focus:ring-2 focus:ring-accent/60";
 
 export default function OpportunitiesExplorer({ items }: { items: Opportunity[] }) {
   const [query, setQuery] = useState("");
@@ -82,22 +82,23 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
   return (
     <>
       {/* Hero */}
-      <section className="border-y border-brand/10 bg-gradient-to-b from-brand-soft/80 via-surface/70 to-accent-soft/45">
+      <section className="border-y-2 border-brand/15 bg-gradient-to-br from-brand-soft via-accent-soft/75 to-brand-soft/90">
         <div className="mx-auto max-w-6xl px-4 py-16 text-center sm:px-6 sm:py-24">
-          <span className="inline-block rounded-full border border-accent/40 bg-accent-soft px-3.5 py-1 text-xs font-semibold text-[#8A6508] shadow-2xs">
+          <span className="inline-block rounded-full border border-accent bg-accent px-4 py-1 text-xs font-bold text-ink shadow-xs">
             Oportunidades para jóvenes
           </span>
-          <h2 className="mx-auto mt-5 max-w-3xl text-4xl font-bold leading-tight sm:text-5xl">
-            Encuentra tu próxima <span className="text-brand">oportunidad</span>
+          <h2 className="mx-auto mt-5 max-w-3xl text-4xl font-extrabold leading-tight sm:text-5xl">
+            Encuentra tu próxima{" "}
+            <span className="rounded-lg bg-accent/35 px-2 text-brand">oportunidad</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-ink/75 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base font-medium text-ink/75 sm:text-lg">
             Becas, empleos, cursos gratuitos, convocatorias y concursos, reunidos en un solo lugar y actualizados a diario.
           </p>
 
           <form
             role="search"
             onSubmit={(e) => e.preventDefault()}
-            className="mx-auto mt-8 flex max-w-2xl flex-col gap-3 rounded-2xl border border-brand/20 bg-surface p-2 shadow-sm sm:flex-row"
+            className="mx-auto mt-8 flex max-w-2xl flex-col gap-3 rounded-2xl border-2 border-brand/30 bg-surface p-2 shadow-md sm:flex-row"
           >
             <label htmlFor="search" className="sr-only">
               Buscar oportunidades
@@ -112,14 +113,14 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
             />
             <a
               href="#oportunidades"
-              className="rounded-xl bg-brand px-6 py-3 text-center text-sm font-semibold text-white shadow-xs transition-colors hover:bg-brand-dark"
+              className="rounded-xl bg-brand px-6 py-3 text-center text-sm font-bold text-white shadow-sm transition-all hover:bg-brand-dark"
             >
               Buscar
             </a>
           </form>
 
           <div
-            className="mt-6 flex flex-wrap items-center justify-center gap-2"
+            className="mt-6 flex flex-wrap items-center justify-center gap-2.5"
             role="group"
             aria-label="Filtrar por categoría"
           >
@@ -131,10 +132,10 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
                   type="button"
                   aria-pressed={active}
                   onClick={() => setCategory(f)}
-                  className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all ${
+                  className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
                     active
-                      ? "bg-brand text-white shadow-xs"
-                      : "border border-brand/15 bg-surface text-ink/75 hover:border-accent hover:bg-accent-soft/60 hover:text-ink"
+                      ? "border-2 border-accent bg-brand text-white shadow-sm"
+                      : "border-2 border-brand/20 bg-surface text-ink/80 hover:border-accent hover:bg-accent hover:text-ink"
                   }`}
                 >
                   {f}
@@ -147,13 +148,13 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
 
       {/* Oportunidades */}
       <section id="oportunidades" className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-        <div className="flex flex-col justify-between gap-4 border-b border-brand/15 pb-6 sm:flex-row sm:items-end">
+        <div className="flex flex-col justify-between gap-4 border-b-2 border-brand/15 pb-6 sm:flex-row sm:items-end">
           <div>
-            <div className="mb-2 h-1 w-12 rounded-full bg-gradient-to-r from-brand to-accent" />
-            <h2 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+            <div className="mb-2 h-1.5 w-16 rounded-full bg-gradient-to-r from-brand via-brand to-accent" />
+            <h2 className="text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">
               Oportunidades activas
             </h2>
-            <p className="mt-1 text-sm text-ink/65">
+            <p className="mt-1 text-sm font-medium text-ink/70">
               {results.length === 1
                 ? "Mostrando 1 oportunidad disponible"
                 : `Mostrando ${results.length} oportunidades disponibles`}
@@ -164,16 +165,16 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
             <button
               type="button"
               onClick={clear}
-              className="self-start rounded-xl border border-brand/20 bg-surface px-3.5 py-2 text-xs font-semibold text-brand transition-colors hover:border-brand hover:bg-brand-soft sm:self-auto"
+              className="self-start rounded-xl border-2 border-accent bg-accent px-4 py-2 text-xs font-bold text-ink shadow-xs transition-transform hover:scale-[1.02] sm:self-auto"
             >
               Limpiar filtros
             </button>
           )}
         </div>
 
-        <div className="mt-6 grid grid-cols-1 gap-4 rounded-2xl border border-brand/10 bg-surface/75 p-4 sm:grid-cols-3">
+        <div className="mt-6 grid grid-cols-1 gap-4 rounded-2xl border-2 border-brand/15 bg-surface/90 p-4 shadow-xs sm:grid-cols-3">
           <div>
-            <label htmlFor="filter-location" className="mb-1.5 block text-xs font-semibold text-ink/80">
+            <label htmlFor="filter-location" className="mb-1.5 block text-xs font-bold text-brand">
               Ubicación
             </label>
             <select
@@ -192,7 +193,7 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
           </div>
 
           <div>
-            <label htmlFor="filter-closing" className="mb-1.5 block text-xs font-semibold text-ink/80">
+            <label htmlFor="filter-closing" className="mb-1.5 block text-xs font-bold text-brand">
               Cierre próximo
             </label>
             <select
@@ -208,7 +209,7 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
           </div>
 
           <div>
-            <label htmlFor="filter-sort" className="mb-1.5 block text-xs font-semibold text-ink/80">
+            <label htmlFor="filter-sort" className="mb-1.5 block text-xs font-bold text-brand">
               Ordenar por
             </label>
             <select
@@ -225,17 +226,17 @@ export default function OpportunitiesExplorer({ items }: { items: Opportunity[] 
         </div>
 
         {results.length === 0 ? (
-          <div className="mt-10 rounded-2xl border border-accent/35 bg-accent-soft/50 p-10 text-center">
-            <p className="text-base font-semibold text-ink">
+          <div className="mt-10 rounded-2xl border-2 border-accent bg-accent-soft p-10 text-center shadow-xs">
+            <p className="text-base font-bold text-ink">
               No encontramos oportunidades con esos filtros
             </p>
-            <p className="mt-2 text-sm text-ink/70">
+            <p className="mt-2 text-sm text-ink/75">
               Intenta cambiar la categoría, ampliar la fecha de cierre o limpiar los filtros activos.
             </p>
             <button
               type="button"
               onClick={clear}
-              className="mt-5 rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-dark"
+              className="mt-5 rounded-xl bg-brand px-5 py-2.5 text-sm font-bold text-white shadow-xs transition-colors hover:bg-brand-dark"
             >
               Ver todas las oportunidades
             </button>
