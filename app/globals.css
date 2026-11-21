@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --bg-page: #f6f8fd;
-  --bg-glow-blue: rgba(36, 72, 216, 0.07);
-  --bg-glow-gold: rgba(242, 189, 56, 0.11);
+  --bg-page: #eef3ff;
+  --bg-blue-strong: rgba(36, 72, 216, 0.16);
+  --bg-gold-strong: rgba(242, 189, 56, 0.22);
 }
 
 @layer base {
@@ -16,9 +16,11 @@
   body {
     background-color: var(--bg-page);
     background-image:
-      radial-gradient(circle at 10% 6%, var(--bg-glow-blue), transparent 40%),
-      radial-gradient(circle at 90% 14%, var(--bg-glow-gold), transparent 36%),
-      linear-gradient(180deg, rgba(238, 242, 253, 0.55) 0%, rgba(254, 247, 228, 0.25) 55%, rgba(246, 248, 253, 0.9) 100%);
+      radial-gradient(circle at 10% 5%, var(--bg-blue-strong), transparent 45%),
+      radial-gradient(circle at 90% 12%, var(--bg-gold-strong), transparent 42%),
+      radial-gradient(circle at 50% 65%, rgba(36, 72, 216, 0.08), transparent 55%),
+      linear-gradient(180deg, #eef3ff 0%, #fff8e3 50%, #e8efff 100%);
+    min-height: 100vh;
     @apply text-ink antialiased;
   }
 
